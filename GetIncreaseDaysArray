@@ -1,0 +1,23 @@
+        [HttpGet("{weekDay}/{daysCount}")]
+        public async Task<string> GetIncreaseDaysArray(string weekDay, int daysCount, CancellationToken cancellationToken)
+        {
+            
+            string[] weeks = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+            string week = weekDay;
+            var index =  Array.FindIndex(weeks, row => row == weekDay);
+            if (daysCount < 1) return "";
+            for (int dia =1 ; dia <= daysCount; dia++)
+            {
+                if (index.Equals(weeks.Length-1))
+                {
+                    week = "Monday";
+                    index = Array.FindIndex(weeks, row => row == week);
+                }
+                else
+                {
+                    index = Array.FindIndex(weeks, row => row == week)+1;
+                    week = weeks[index];
+                }
+            }
+            return await Task.FromResult(week);
+        }
